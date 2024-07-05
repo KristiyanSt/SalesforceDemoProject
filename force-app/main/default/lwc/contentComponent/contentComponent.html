@@ -1,0 +1,18 @@
+<template>
+    <template lwc:if={isLoading}>
+        Loading...
+    </template>
+    <template lwc:else>
+        <lightning-card title="Accounts" icon-name="custom:custom12">
+            <ul class="slds-m-around_medium">
+                <template lwc:if={isCollectionEmpty}>
+                    There are no accounts available
+                </template>
+                <template lwc:else>
+                    <lightning-datatable key-field="id" data={accounts} columns={columns} onrowaction={handleDelete}> 
+                    </lightning-datatable>
+                </template>
+            </ul>
+        </lightning-card>
+    </template>
+</template>
