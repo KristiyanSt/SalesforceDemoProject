@@ -6,6 +6,8 @@ export default class ContentComponent extends LightningElement {
     accounts = null;
     @track isLoading = false;
     isCollectionEmpty = false;
+    isFormShown = false;
+
     columns = [
         {
             label: "Name",
@@ -24,22 +26,38 @@ export default class ContentComponent extends LightningElement {
         {
             type: 'action',
             typeAttributes: { 
-                rowActions: [ { label: 'Delete', name: 'delete' } ] 
+                rowActions: [ { label: 'Delete', name: 'delete'  } ] 
             }
         },
     ];
     
-    handleDelete(event) {
+    handleShowForm() {
+        this.isFormShown = true;
+    }
+
+    handleHideForm() {
+        this.isFormShown = false;
+    }
+
+    async handleDelete(event) {
         const {Id} = event.detail.row;
         try {
-            deleteAccountById(Id);
+            await deleteAccountById({Id});
             this.accounts = this.accounts.filter((acc) => acc.Id !== Id );
         } catch (error) {
             console.log(JSON.stringify(error))
         }
     }
 
-    
+    addAccount(event){
+        if(this.accounts){
+            this.accounts.push(event.detail);
+            this.handleHideForm();
+        }else{
+            this.accounts = [account];
+        }
+    }
+
     async connectedCallback() {
         try {
             this.isLoading = true;
