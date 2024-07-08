@@ -42,7 +42,7 @@ export default class ContentComponent extends LightningElement {
     async handleDelete(event) {
         const {Id} = event.detail.row;
         try {
-            await deleteAccountById({Id});
+            await deleteAccountById({id: Id});
             this.accounts = this.accounts.filter((acc) => acc.Id !== Id );
         } catch (error) {
             console.log(JSON.stringify(error))
