@@ -1,0 +1,17 @@
+<template>
+    <lightning-checkbox-group name="filters"
+            label="Filter options"
+            options={filterOptions}
+            value={filterValue}
+            onchange={onHandleFilter}></lightning-checkbox-group>
+    <lightning-datatable 
+        key-field="id" 
+        columns={columns} 
+        data={contacts} 
+        hide-checkbox-column
+        default-sort-direction={defaultSortDirection} 
+        sorted-direction={sortDirection} 
+        sorted-by={sortedBy}
+        onsort={onHandleSort}>
+    </lightning-datatable>
+</template>

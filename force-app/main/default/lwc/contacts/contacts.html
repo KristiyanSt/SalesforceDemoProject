@@ -1,0 +1,18 @@
+<template>
+    <template lwc:if={isTableShown}>
+        <lightning-button 
+        label="Create Contact" 
+        onclick={toggleTableShow} 
+        class="slds-m-top_medium" 
+        variant="brand"></lightning-button>
+        <c-contact-table></c-contact-table>
+    </template>
+    <template lwc:else>
+        <lightning-button 
+        label="Back" 
+        onclick={toggleTableShow} 
+        class="slds-m-top_medium" 
+        variant="neutral"></lightning-button>
+        <c-create-contact></c-create-contact>
+    </template>
+</template>

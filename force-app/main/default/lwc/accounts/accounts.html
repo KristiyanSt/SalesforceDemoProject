@@ -4,8 +4,8 @@
     </template>
     <template lwc:else>
         <template lwc:if={isFormShown}>
-            <c-create-account-component onhideform={handleHideForm} onadd={addAccount}>
-            </c-create-account-component>
+            <c-create-account onhideform={handleHideForm} onadd={addAccount}>
+            </c-create-account>
         </template>
         <template lwc:else>
             <lightning-button variant="brand" label="Create Account" title="Primary action" onclick={handleShowForm}>

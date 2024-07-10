@@ -12,7 +12,6 @@ export default class CreateAccountComponent extends LightningElement {
         try {
             const response = await createAccount({accountObj: JSON.stringify(this.account)});
             const createdAccount = JSON.parse(response);
-            console.log(JSON.stringify(createdAccount));
             this.dispatchEvent(new CustomEvent('add',{detail: createdAccount}));
         } catch (error) {
             console.log(JSON.stringify(error));

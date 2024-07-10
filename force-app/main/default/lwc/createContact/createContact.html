@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Create New Contact" icon-name="standard:contact">
+        <div class="slds-p-around_medium">
+            <lightning-input label="First name" field-name="FirstName" value={contact.FirstName} onchange={handleChange} required></lightning-input>
+            <lightning-input label="Last name" field-name="LastName" value={contact.LastName} onchange={handleChange} required></lightning-input>
+            <lightning-input label="Email" field-name="Email" type="email" value={contact.email} onchange={handleChange} required></lightning-input>
+            <lightning-input label="Phone" field-name="Phone" type="tel" value={contact.phone} onchange={handleChange} required></lightning-input>
+            <lightning-radio-group field-name="AccountId"
+                          label="Account Lookup"
+                          options={accountOptions}
+                          onchange={handleChange}
+                            required
+                          type="radio"
+                          ></lightning-radio-group>
+            <lightning-button label="Create Contact" onclick={handleCreateContact} class="slds-m-top_medium" variant="brand"></lightning-button>
+        </div>
+    </lightning-card>
+</template>
