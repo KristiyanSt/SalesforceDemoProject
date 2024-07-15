@@ -10,7 +10,7 @@ public with sharing class ContactManager {
         }
     }
     @AuraEnabled
-    public static String getContacts(Boolean isSpecialFilter){
+    public static String getContacts(Boolean isSpecialFilter, String sortBy, String sortDirection, String filter){
         String query = 'SELECT Id, Name, Phone, Email, CreatedDate, Account.Name, ' +
         '(SELECT IsSpecial__c FROM ContactExtraInfos__r) ' + 
         'FROM Contact';
@@ -18,6 +18,14 @@ public with sharing class ContactManager {
         if(isSpecialFilter != null) {
             String isSpecialQuery = ' WHERE Id IN (SELECT ContactId__c FROM ContactExtraInfo__c WHERE IsSpecial__c = :isSpecialFilter)';
             query += isSpecialQuery;
+        }
+
+        if(sortBy != null) {
+            String sortQuery = ' ORDER BY ' + sortBy;
+            if(sortDirection != null) {
+                sortQuery += ' ' + sortDirection;
+            }
+            query += sortQuery;
         }
         
         try {

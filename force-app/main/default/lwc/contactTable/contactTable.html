@@ -1,17 +1,38 @@
 <template>
-    <lightning-checkbox-group name="filters"
-            label="Filter options"
-            options={filterOptions}
-            value={filterValue}
-            onchange={onHandleFilter}></lightning-checkbox-group>
+    <div class="slds-m-top_medium slds-m-bottom_medium slds-size_1-of-3">
+        <lightning-input
+            name="nameFilter"
+            field-name="Name"
+            label="Name"
+            type="filter"
+            onchange={handleIsSpecialFilterChange}
+        ></lightning-input>
+        <lightning-checkbox-group 
+            name="isSpecial"
+            field-name="isSpecial"
+            label="Is special?"
+            value={filterValues}
+            options={isSpecialOptions}
+            onchange={handleIsSpecialFilterChange}></lightning-checkbox-group>
+        <lightning-combobox
+            name="sortOptions"
+            label="Sort options"
+            value={sortParams.sortBy}
+            placeholder="Select option"
+            options={sortOptions}
+            onchange={handleSortChange} ></lightning-combobox>
+        <lightning-combobox
+            name="sortDirections"
+            label="Sort direction"
+            value={sortParams.sortDirection}
+            placeholder="Select direction"
+            options={sortDirectionOptions}
+            onchange={handleSortChange} ></lightning-combobox>
+    </div>
     <lightning-datatable 
         key-field="id" 
         columns={columns} 
-        data={contacts} 
-        hide-checkbox-column
-        default-sort-direction={defaultSortDirection} 
-        sorted-direction={sortDirection} 
-        sorted-by={sortedBy}
-        onsort={onHandleSort}>
+        data={contacts}
+        hide-checkbox-column>
     </lightning-datatable>
 </template>
