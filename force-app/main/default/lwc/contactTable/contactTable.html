@@ -1,38 +1,21 @@
 <template>
     <div class="slds-m-top_medium slds-m-bottom_medium slds-size_1-of-3">
-        <lightning-input
-            name="nameFilter"
-            field-name="Name"
-            label="Name"
-            type="filter"
-            onchange={handleIsSpecialFilterChange}
-        ></lightning-input>
-        <lightning-checkbox-group 
-            name="isSpecial"
-            field-name="isSpecial"
-            label="Is special?"
-            value={filterValues}
-            options={isSpecialOptions}
-            onchange={handleIsSpecialFilterChange}></lightning-checkbox-group>
-        <lightning-combobox
-            name="sortOptions"
-            label="Sort options"
-            value={sortParams.sortBy}
-            placeholder="Select option"
-            options={sortOptions}
-            onchange={handleSortChange} ></lightning-combobox>
-        <lightning-combobox
-            name="sortDirections"
-            label="Sort direction"
-            value={sortParams.sortDirection}
-            placeholder="Select direction"
-            options={sortDirectionOptions}
-            onchange={handleSortChange} ></lightning-combobox>
+        <lightning-input name="nameFilter" field-name="Name" label="Name" type="filter"
+            onchange={handleFilterChange}></lightning-input>
+        <lightning-input name="phoneFilter" field-name="Phone" label="Phone" type="number"
+            onchange={handleFilterChange}></lightning-input>
+        <lightning-input name="emailFilter" field-name="Email" label="Email" type="email"
+            onchange={handleFilterChange}></lightning-input>
+        <lightning-input name="accountNameFilter" field-name="AccountName" label="Account name" type="text"
+            onchange={handleFilterChange}></lightning-input>
+        <lightning-checkbox-group name="isSpecialFilter" field-name="isSpecial" label="Is special?" value={filterValues}
+            options={isSpecialOptions} onchange={handleFilterChange}></lightning-checkbox-group>
+        <lightning-combobox name="sortOptions" label="Sort options" value={sortParams.sortBy}
+            placeholder="Select option" options={sortOptions} onchange={handleSortChange}></lightning-combobox>
+        <lightning-combobox name="sortDirections" label="Sort direction" value={sortParams.sortDirection}
+            placeholder="Select direction" options={sortDirectionOptions}
+            onchange={handleSortChange}></lightning-combobox>
     </div>
-    <lightning-datatable 
-        key-field="id" 
-        columns={columns} 
-        data={contacts}
-        hide-checkbox-column>
+    <lightning-datatable key-field="id" columns={columns} data={contacts} hide-checkbox-column>
     </lightning-datatable>
 </template>

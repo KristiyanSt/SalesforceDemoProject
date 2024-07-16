@@ -93,33 +93,25 @@ export default class ContactTable extends LightningElement {
         }
         await this.fetchContacts();
     }
-    onFilterChange(event) {
-        console.log(event.target.fieldName);
-    }
-    async handleIsSpecialFilterChange(event) {
+    async handleFilterChange(event) {
         const fieldName = event.target.fieldName;
         const value = event.target.value;
 
         if(this.filterParams.hasOwnProperty(fieldName)){
-            console.log(JSON.stringify(value.isArray()))
-            if(value.isArray()){
-                this.isSpecialFilter = value.includes("isSpecial") ? true : null;
+
+            if(typeof value !== 'string'){
+                this.filterParams.isSpecial = value.includes("isSpecial") ? true : null;
             }else {
-                this.filterParams[event.target.fieldName] = event.target.value;
+                this.filterParams[fieldName] = value;
             }
         }
-        console.log(JSON.stringify(this.filterParams));
         await this.fetchContacts();
     }
 
     async fetchContacts() {
         try {
-            const params = {
-                isSpecialFilter: this.isSpecialFilter,
-                sortBy: this.sortParams.sortBy,
-                sortDirection: this.sortParams.sortDirection
-            }
-            const contactsJsonRes = await getContacts(params);
+            const params = JSON.stringify({...this.sortParams, ...this.filterParams });
+            const contactsJsonRes = await getContacts({queryString: params});
             this.contacts = JSON.parse(contactsJsonRes);
         } catch (error) {
             console.log(error);

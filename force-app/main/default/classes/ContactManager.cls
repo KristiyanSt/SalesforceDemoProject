@@ -10,23 +10,49 @@ public with sharing class ContactManager {
         }
     }
     @AuraEnabled
-    public static String getContacts(Boolean isSpecialFilter, String sortBy, String sortDirection, String filter){
+    public static String getContacts(String queryString){
+        QueryParams queryParams = (QueryParams) JSON.deserialize(queryString, QueryParams.class);
+
         String query = 'SELECT Id, Name, Phone, Email, CreatedDate, Account.Name, ' +
         '(SELECT IsSpecial__c FROM ContactExtraInfos__r) ' + 
         'FROM Contact';
 
-        if(isSpecialFilter != null) {
-            String isSpecialQuery = ' WHERE Id IN (SELECT ContactId__c FROM ContactExtraInfo__c WHERE IsSpecial__c = :isSpecialFilter)';
-            query += isSpecialQuery;
+        String filterQuery = '';
+        String sortQuery = '';
+
+        if(queryParams.IsSpecial != null) {
+            Boolean isSpecial = queryParams.IsSpecial;
+            filterQuery = ' WHERE Id IN (SELECT ContactId__c FROM ContactExtraInfo__c WHERE IsSpecial__c = :isSpecial)';
         }
 
-        if(sortBy != null) {
-            String sortQuery = ' ORDER BY ' + sortBy;
-            if(sortDirection != null) {
-                sortQuery += ' ' + sortDirection;
-            }
-            query += sortQuery;
+        if(queryParams.Name != null) {
+            String nameQuery = ' Name LIKE \'%' + queryParams.Name + '%\'';
+            filterQuery += filterQuery.equals('') ? ' WHERE' + nameQuery : ' AND' + nameQuery;
         }
+        
+        if(queryParams.Phone != null) {
+            String phoneQuery = ' Phone LIKE \'%' + queryParams.Phone + '%\'';
+            filterQuery += filterQuery.equals('') ? ' WHERE' + phoneQuery : ' AND' + phoneQuery;
+        }
+
+        if(queryParams.Email != null) {
+            String emailQuery = ' Email LIKE \'%' + queryParams.Email + '%\'';
+            filterQuery += filterQuery.equals('') ? ' WHERE' + emailQuery : ' AND' + emailQuery;
+        }
+
+        if(queryParams.AccountName != null) {
+            String accountNameQuery = ' Account.Name LIKE \'%' + queryParams.AccountName + '%\'';
+            filterQuery += filterQuery.equals('') ? ' WHERE' + accountNameQuery : ' AND' + accountNameQuery;
+        }
+        
+        if(queryParams.SortBy != null) {
+            sortQuery += ' ORDER BY ' + queryParams.SortBy;
+            if(queryParams.SortDirection != null) {
+                sortQuery += ' ' + queryParams.SortDirection;
+            }
+        }
+
+        query += filterQuery + sortQuery;
         
         try {
             List<Contact> contacts = Database.query(query);
@@ -68,5 +94,22 @@ public with sharing class ContactManager {
         public String AccountName {get;set;}
         @AuraEnabled 
         public Boolean IsSpecial {get;set;}
+    }
+
+    private class QueryParams {
+        @AuraEnabled
+        public String SortBy {get;set;}
+        @AuraEnabled
+        public String SortDirection {get;set;}
+        @AuraEnabled
+        public Boolean IsSpecial {get;set;}
+        @AuraEnabled
+        public String Phone {get;set;}
+        @AuraEnabled
+        public String Email {get;set;}
+        @AuraEnabled
+        public String Name {get;set;}
+        @AuraEnabled
+        public String AccountName {get;set;}
     }
 }
